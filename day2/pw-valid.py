@@ -11,7 +11,7 @@ def part1(pwlistIn):
     pattern = re.compile("(\d+)-(\d+) (.): (.+)")
     count = 0
 
-    for pw in passwords:
+    for pw in pwlistIn:
         result = pattern.search(pw)
         if result.group(4).count(result.group(3)) >= int(result.group(1)) and result.group(4).count(result.group(3)) <= int(result.group(2)):
             count = count + 1
@@ -21,7 +21,7 @@ def part2(pwlistIn):
     pattern = re.compile("(\d+)-(\d+) (.): (.+)")
     count = 0
 
-    for pw in passwords:
+    for pw in pwlistIn:
         result = pattern.search(pw)
         if (result.group(3) == result.group(4)[int(result.group(1)) - 1]) != (result.group(3) == result.group(4)[int(result.group(2)) - 1]):
             count = count + 1
