@@ -7,16 +7,15 @@ def loadInput():
     f.close()
     return content
 
-def partOne(pisteIn):
+def traversePiste(pisteIn, rightIn, downIn):
     tobPointer = 0
     treeCount = 0
     pisteWidth = len(pisteIn[0])
 
-    pisteIn.pop(0)
-    for row in pisteIn:
-        tobPointer = tobPointer + 3
+    for i in range(downIn, len(pisteIn), downIn):
+        tobPointer = tobPointer + rightIn
         if tobPointer >= pisteWidth: tobPointer = tobPointer - pisteWidth
-        if row[tobPointer] == "#":
+        if pisteIn[i][tobPointer] == "#":
             treeCount = treeCount + 1
     return treeCount
 
@@ -26,9 +25,8 @@ def partOne(pisteIn):
 
 try:
     piste = loadInput()
-
-    print(f"Part 1 answer = {partOne(piste)}")
-
+    print(f"Part 1 = {traversePiste(piste, 3, 1)}")
+    print(f"Part 2 = {traversePiste(piste, 1, 1) * traversePiste(piste, 3, 1) * traversePiste(piste, 5, 1) * traversePiste(piste, 7, 1) * traversePiste(piste, 1, 2)}")
 
 except Exception as e:
     print("Aborting..../n", e)
