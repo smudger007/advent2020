@@ -15,17 +15,15 @@ def processPassportList(listIn):
     for entry in listIn:
         
         if entry == "":
-            if pairCount == 8 or (pairCount == 7 and cidCount == 0):
-                count = count + 1
+            if pairCount == 8 or (pairCount == 7 and cidCount == 0): count = count + 1
             pairCount = 0
             cidCount = 0
         else: 
             pairCount = pairCount + entry.count(':')
             if "cid" in entry: cidCount = 1
 
-    if pairCount == 8 or (pairCount == 7 and cidCount == 0):
-                count = count + 1
-                print("****YES***")
+    if pairCount == 8 or (pairCount == 7 and cidCount == 0): count = count + 1
+            
     
     return count
 
