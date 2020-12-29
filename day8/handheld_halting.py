@@ -16,6 +16,11 @@ def interpreter(inCode):
     accumulator = 0
 
     while running:
+
+        if pointer >= len(inCode):
+            # Success - we fixed it....
+            return (1, accumulator)
+
         if lineCounter[pointer] == 1:
             running = 0
         else:
@@ -35,7 +40,33 @@ def interpreter(inCode):
                     pointer = pointer + int(interpret.group(3))
                 else:
                     pointer = pointer - int(interpret.group(3))
-                
+
+    # We've hit an infinite loop - let's report back...   
+    return (0, accumulator)
+
+def fixCode(inCode):
+    accumulator = 0
+    codePattern = re.compile("(.*) ([-+])(.*)")
+
+    # Loop through code, changing jmp to nop and vice versa and trying code again. Continue until we fix....
+    
+    for linePointer, line in enumerate(inCode):
+        interpret = codePattern.search(line)
+        if interpret.group(1) == "jmp" or interpret.group(1) == "nop":
+            if interpret.group(1) == "jmp":
+                inCode[linePointer] = "nop " + interpret.group(2) + interpret.group(3)
+            else:
+                inCode[linePointer] = "jmp " + interpret.group(2) + interpret.group(3)
+            
+            retry = interpreter(inCode)
+            # Did we fix??
+            if retry[0] == 1:
+                # YES :-)
+                accumulator = retry[1]
+                break
+
+            inCode[linePointer] = line
+
     return accumulator
 
 #============================================
@@ -44,10 +75,9 @@ def interpreter(inCode):
 
 try:
     code = loadInput()
-
-    print(f"input = {code}")
-
-    print(f"Part 1 = {interpreter(code)}")
+    #print(f"input = {code}\n")
+    print(f"Part 1 = {interpreter(code)[1]}")
+    print(f"Part 2 = {fixCode(code)}")
 
 except Exception as e:
     print("Aborting..../n", e)
